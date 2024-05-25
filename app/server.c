@@ -51,13 +51,14 @@ int main() {
 	printf("Client connected\n");
 
     uint8_t buff[1024];
+    string response;
     read(conn, buff, sizeof(buff));
     strtok(buff, " ");
     char* path = strtok(0, " ");
     if (strcmp(path, "/") == 0) {
-        char response[] = "HTTP/1.1 200 OK\r\n\r\n";
+        response = "HTTP/1.1 200 OK\r\n\r\n";
     } else {
-        char response[] = "HTTP/1.1 404 NOT FOUND\r\n\r\n";
+        response = "HTTP/1.1 404 NOT FOUND\r\n\r\n";
     }
     send(conn, response, sizeof(response), 0);
 
