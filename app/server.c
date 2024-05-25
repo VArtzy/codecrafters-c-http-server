@@ -53,7 +53,7 @@ int main() {
     int buff[1024];
     read(conn, buff, sizeof(buff));
     strtok(buff, " ");
-    printf("%s\n", strtok(buff, " "));
+    printf("%s\n", strtok(0, " "));
 
     char response[] = "HTTP/1.1 200 OK\r\n\r\n";
     send(client_socket_fd, response, sizeof(response), 0);
