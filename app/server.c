@@ -58,9 +58,7 @@ int main() {
         size_t contentLength = strlen(path) - 6;
         char *content = path + 6;
         const char *format = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
-        char response[1024];
-        sprintf(response, format, contentLength, content);
-        send(conn, response, sizeof(response), 0);
+        send(conn, format(format, contentLength, content), sizeof(response), 0);
     } else if (strcmp(path, "/") == 0) {
         char response[] = "HTTP/1.1 200 OK\r\n\r\n";
         send(conn, response, sizeof(response), 0);
