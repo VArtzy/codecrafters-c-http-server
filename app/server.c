@@ -56,7 +56,7 @@ int main() {
     printf("%s\n", strtok(0, " "));
 
     char response[] = "HTTP/1.1 200 OK\r\n\r\n";
-    send(client_socket_fd, response, sizeof(response), 0);
+    send(conn, response, sizeof(response), 0);
 
 	close(server_fd);
 
