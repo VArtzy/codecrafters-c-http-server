@@ -50,7 +50,7 @@ int main() {
 	int conn = accept(server_fd, (struct sockaddr *) &client_addr, &client_addr_len);
 	printf("Client connected\n");
 
-    int buff[1024];
+    uint8_t buff[1024];
     read(conn, buff, sizeof(buff));
     strtok(buff, " ");
     printf("%s\n", strtok(0, " "));
