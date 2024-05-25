@@ -56,9 +56,9 @@ int main() {
     strtok(buff, " ");
     char* path = strtok(0, " ");
     if (strcmp(path, "/") == 0) {
-        response = "HTTP/1.1 200 OK\r\n\r\n";
+        response[] = "HTTP/1.1 200 OK\r\n\r\n";
     } else {
-        response = "HTTP/1.1 404 NOT FOUND\r\n\r\n";
+        response[] = "HTTP/1.1 404 NOT FOUND\r\n\r\n";
     }
     send(conn, response, sizeof(response), 0);
 
