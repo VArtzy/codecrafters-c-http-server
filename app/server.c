@@ -51,7 +51,7 @@ int main() {
 	printf("Client connected\n");
 
     uint8_t buff[1024];
-    string response;
+    char response[2048];
     read(conn, buff, sizeof(buff));
     strtok(buff, " ");
     char* path = strtok(0, " ");
