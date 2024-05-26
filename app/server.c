@@ -63,8 +63,7 @@ void http_handler(int conn) {
         char response[1024];
         if (strcmp(contentEncoding, "Accept-Encoding: gzip") == 0) {
             printf("sigma");
-            char *format = "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
-        sprintf(response, format, contentLength, content);
+        sprintf(response, "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s", contentLength, content);
         send(conn, response, sizeof(response), 0);
         } else {
             printf("beta");
