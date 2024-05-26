@@ -21,7 +21,7 @@ int compressToGzip(const char *input, int inputSize, char *output, int outputSiz
   zs.next_in = (Bytef *)input;
   zs.avail_out = (uInt)outputSize;
   zs.next_out = (Bytef *)output;
-  compress(&zs);
+  compress(&zs, Z_FINISH);
   return zs.total_out;
 }
 
