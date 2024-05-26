@@ -7,8 +7,29 @@
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
+#include <zlib.h>
 
 char *directory = NULL;
+
+int compressToGzip(const char *input, int inputSize, char *output, int outputSize) {
+    z_stream zs = {0};
+    zs.zalloc = Z_NULL;
+    zs.zfree = Z_NULL;
+    zs.opaque = Z_NULL;
+    zs.avail_in = (uInt)inputSize;
+    zs.next_in = (Bytef *)input;
+    zs.avail_out = (uInt)outputSize;
+    zs.next_out = (Bytef *)output;
+    deflateInit2(&zs, Z_DEFAULT_COMPRESSION, Z_DEFLATED, 15 | 16, 8,
+            Z_DEFAULT_STRATEGY);
+    int ret = deflate(&zs, Z_FINISH);
+    deflateEnd(&zs);
+    if (ret != Z_STREAM_END) {
+        fprintf(stderr, "Compression failed\n");
+        return -1;
+    }
+    return zs.total_out;
+}
 
 void http_handler(int conn) {
     uint8_t buff[1024];
@@ -63,7 +84,9 @@ void http_handler(int conn) {
         char response[1024];
         if (contentEncoding != NULL) {
             if (strstr(contentEncoding, "gzip") != NULL) {
-                sprintf(response, "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s", contentLength, content);
+                char compressed[1024];
+                int compressedLength = compressToGzip(content, strlen(content), compressed, 1024);
+                sprintf(response, "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n", compressedLength);
             } else {
                 sprintf(response, "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s", contentLength, content);
             }
