@@ -23,7 +23,7 @@ void http_handler(int conn) {
         FILE *fptr = fopen(filepath, "w");
         fprintf(fptr, content);
         fclose(fptr);
-        char response[] = "HTTP/1.1 201 ACCEPTED\r\n\r\n";
+        char response[] = "HTTP/1.1 201 Created\r\n\r\n";
         send(conn, response, sizeof(response), 0);
     }
     if (strncmp(path, "/files", 6) == 0 && directory != NULL) {
