@@ -60,12 +60,11 @@ void http_handler(int conn) {
         char *contentEncoding = strtok(0, "\r\n");
         char *format;
         if (strcmp(contentEncoding, "Accept-Encoding: gzip") == 0) {   
-            printf("hi");
         format = "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
         } else {
-            printf("hi");
             format = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
         }
+        printf(format);
         size_t contentLength = strlen(path) - 6;
         char *content = path + 6;
         char response[1024];
