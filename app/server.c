@@ -61,12 +61,11 @@ void http_handler(int conn) {
         size_t contentLength = strlen(path) - 6;
         char *content = path + 6;
         char response[1024];
-        char *format = "HTTP/1.1 200 OK\r\n";
         if (strcmp(contentEncoding, "Accept-Encoding: gzip") == 0) {
-            format = strcat(format, "Content-Encoding: gzip\r\n");
+            sprintf(response, "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s", contentLength, content);
+        } else {
+            sprintf(response, "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s", contentLength, content);
         }
-        format = strcat(format, "Content-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s");
-        sprintf(response, format, contentLength, content);
         send(conn, response, sizeof(response), 0);
     } else if (strcmp(path, "/") == 0) {
         char response[] = "HTTP/1.1 200 OK\r\n\r\n";
