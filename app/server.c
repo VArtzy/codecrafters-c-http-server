@@ -21,7 +21,10 @@ int compressToGzip(const char *input, int inputSize, char *output, int outputSiz
   zs.next_in = (Bytef *)input;
   zs.avail_out = (uInt)outputSize;
   zs.next_out = (Bytef *)output;
-  compress(&zs, Z_FINISH);
+  deflateInit2(&zs, Z_DEFAULT_COMPRESSION, Z_DEFLATED, 15 | 16, 8,
+               Z_DEFAULT_STRATEGY);
+  deflate(&zs, Z_FINISH);
+  deflateEnd(&zs);
   return zs.total_out;
 }
 
