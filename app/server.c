@@ -55,7 +55,7 @@ void http_handler(int conn) {
         sprintf(response, format, strlen(userAgent), userAgent);
         send(conn, response, sizeof(response), 0);
     } else if (strncmp(path, "/echo/", 6) == 0) {
-        char *contentEncoding = strtok(buff, "\r\n\r\n");
+        char *contentEncoding = strtok(0, "\r\n\r\n");
         char *format;
         printf(contentEncoding);
         if (strcmp(contentEncoding, "Accept-Encoding: gzip") == 0) {   
