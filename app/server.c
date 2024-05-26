@@ -68,7 +68,7 @@ void http_handler(int conn) {
         send(conn, response, sizeof(response), 0);
         } else {
             printf("beta");
-            const char *formats = "HTTP/1.1 200 OI\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
+            const char *formats = "HTTP/1.1 200 Ok\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
         sprintf(response, formats, contentLength, content);
         send(conn, response, sizeof(response), 0);
         }
