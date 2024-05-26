@@ -62,11 +62,11 @@ void http_handler(int conn) {
         char *content = path + 6;
         char response[1024];
         if (strcmp(contentEncoding, "Accept-Encoding: gzip") == 0) {   
-            const char *format = "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
             printf("nfrfr");
+            const char *format = "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
         } else {
-            const char *format = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
             printf("Frfr");
+            const char *format = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
         }
         sprintf(response, format, contentLength, content);
         send(conn, response, sizeof(response), 0);
