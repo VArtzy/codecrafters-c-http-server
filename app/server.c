@@ -57,6 +57,7 @@ void http_handler(int conn) {
     } else if (strncmp(path, "/echo/", 6) == 0) {
         char *contentEncoding = strtok(0, "\r\n\r\n");
         char *format;
+        printf(contentEncoding);
         if (strcmp(contentEncoding, "Accept-Encoding: gzip") == 0) {   
         format = "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
         }
