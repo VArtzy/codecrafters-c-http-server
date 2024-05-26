@@ -83,7 +83,7 @@ int main() {
         if (conn < 0) {
             break;
         }
-        pthread_create(&tid, NULL, http_handler, (int *)conn); 
+        pthread_create(&tid, NULL, http_handler, conn); 
         printf("Client connected\n");
     }
 
