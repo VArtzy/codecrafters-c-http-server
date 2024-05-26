@@ -1,3 +1,25 @@
+# C http server
+
+## Concept learned
+
+- Binding port and server listening in C
+- Creating handler and routing via http_handler func and if else
+- Responding http response with it's parts (status line, headers, body)
+- Extracting URL (routing) and http verbs discovering
+- Response body and gzip'in it
+- Read headers and common header like user-agent, host, etc
+- Support concurrent connection (multithreading)
+- Serve file in dir (web-server likely)
+- Save/write file in dir 
+- Stream file via fopen
+- Content Encoding header, compression (gzip/zlib)
+
+## Future TODO? (i think i will never see this code again...)
+
+- Clean code (refactoring) -- to much buch copy/paste -- more modular
+- More dynamic size buffers and static types (it is hard to implement growable data structure in C? idk...)
+
+
 [![progress-banner](https://backend.codecrafters.io/progress/http-server/ecb889fd-0816-4461-adf3-d317f2591217)](https://app.codecrafters.io/users/codecrafters-bot?r=2qF)
 
 This is a starting point for C solutions to the
