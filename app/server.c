@@ -11,21 +11,39 @@
 
 char *directory = NULL;
 
-
 int compressToGzip(const char *input, int inputSize, char *output, int outputSize) {
-  z_stream zs = {0};
-  zs.zalloc = Z_NULL;
-  zs.zfree = Z_NULL;
-  zs.opaque = Z_NULL;
-  zs.avail_in = (uInt)inputSize;
-  zs.next_in = (Bytef *)input;
-  zs.avail_out = (uInt)outputSize;
-  zs.next_out = (Bytef *)output;
-  deflateInit2(&zs, Z_DEFAULT_COMPRESSION, Z_DEFLATED, 15 | 16, 8,
-               Z_DEFAULT_STRATEGY);
-  deflate(&zs, Z_FINISH);
-  deflateEnd(&zs);
-  return zs.total_out;
+    z_stream zs = {0};
+    zs.zalloc = Z_NULL;
+    zs.zfree = Z_NULL;
+    zs.opaque = Z_NULL;
+    zs.avail_in = (uInt)inputSize;
+    zs.next_in = (Bytef *)input;
+    zs.avail_out = (uInt)outputSize;
+    zs.next_out = (Bytef *)output;
+
+    // Initialize the zlib stream for GZIP compression
+    int ret = deflateInit2(&zs, Z_DEFAULT_COMPRESSION, Z_DEFLATED, 15 | 16, 8, Z_DEFAULT_STRATEGY);
+    if (ret != Z_OK) {
+        fprintf(stderr, "deflateInit2 failed with code %d\n", ret);
+        return -1;
+    }
+
+    // Perform the compression
+    ret = deflate(&zs, Z_FINISH);
+    if (ret != Z_STREAM_END) {
+        fprintf(stderr, "deflate failed with code %d\n", ret);
+        deflateEnd(&zs);
+        return -1;
+    }
+
+    // Clean up and return the size of the compressed data
+    ret = deflateEnd(&zs);
+    if (ret != Z_OK) {
+        fprintf(stderr, "deflateEnd failed with code %d\n", ret);
+        return -1;
+    }
+
+    return zs.total_out;
 }
 
 void http_handler(int conn) {
