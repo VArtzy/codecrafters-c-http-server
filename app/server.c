@@ -3,41 +3,9 @@
 #include <sys/socket.h>
 #include <netinet/in.h>
 #include <netinet/ip.h>
-#include <pthread.h>
 #include <string.h>
 #include <errno.h>
 #include <unistd.h>
-
-void http_handler(void *args) {
-    int conn = (int)args;
-
-    uint8_t buff[1024];
-    read(conn, buff, sizeof(buff));
-    strtok(buff, " ");
-    char* path = strtok(0, " ");
-    if (strncmp(path, "/user-agent", 11) == 0) {
-        strtok(0, "\r\n");
-        strtok(0, "\r\n");
-        char* userAgent = strtok(0, "\r\n") + 12;
-        const char *format = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
-        char response[1024];
-        sprintf(response, format, strlen(userAgent), userAgent);
-        send(conn, response, sizeof(response), 0);
-    } else if (strncmp(path, "/echo/", 6) == 0) {
-        size_t contentLength = strlen(path) - 6;
-        char *content = path + 6;
-        const char *format = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
-        char response[1024];
-        sprintf(response, format, contentLength, content);
-        send(conn, response, sizeof(response), 0);
-    } else if (strcmp(path, "/") == 0) {
-        char response[] = "HTTP/1.1 200 OK\r\n\r\n";
-        send(conn, response, sizeof(response), 0);
-    } else {
-        char response[] = "HTTP/1.1 404 Not Found\r\n\r\n";
-        send(conn, response, sizeof(response), 0);
-    }
-}
 
 int main() {
 	// Disable output buffering
@@ -45,7 +13,6 @@ int main() {
 
 	int server_fd, client_addr_len;
 	struct sockaddr_in client_addr;
-    pthread_t tid;
 
 	server_fd = socket(AF_INET, SOCK_STREAM, 0);
 	if (server_fd == -1) {
@@ -78,15 +45,36 @@ int main() {
 	}
 
 	printf("Waiting for a client to connect...\n");
+	client_addr_len = sizeof(client_addr);
 
-    while(1) {
-        client_addr_len = sizeof(client_addr);
-        int conn = accept(server_fd, (struct sockaddr *) &client_addr, &client_addr_len);
-        if (conn < 0) {
-            break;
-        }
-        pthread_create(&tid, NULL, http_handler, (void *)conn); 
-        printf("Client connected\n");
+	int conn = accept(server_fd, (struct sockaddr *) &client_addr, &client_addr_len);
+	printf("Client connected\n");
+
+    uint8_t buff[1024];
+    read(conn, buff, sizeof(buff));
+    strtok(buff, " ");
+    char* path = strtok(0, " ");
+    if (strncmp(path, "/user-agent", 11) == 0) {
+        strtok(0, "\r\n");
+        strtok(0, "\r\n");
+        char* userAgent = strtok(0, "\r\n") + 12;
+        const char *format = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
+        char response[1024];
+        sprintf(response, format, strlen(userAgent), userAgent);
+        send(conn, response, sizeof(response), 0);
+    } else if (strncmp(path, "/echo/", 6) == 0) {
+        size_t contentLength = strlen(path) - 6;
+        char *content = path + 6;
+        const char *format = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
+        char response[1024];
+        sprintf(response, format, contentLength, content);
+        send(conn, response, sizeof(response), 0);
+    } else if (strcmp(path, "/") == 0) {
+        char response[] = "HTTP/1.1 200 OK\r\n\r\n";
+        send(conn, response, sizeof(response), 0);
+    } else {
+        char response[] = "HTTP/1.1 404 Not Found\r\n\r\n";
+        send(conn, response, sizeof(response), 0);
     }
 
 	close(server_fd);
