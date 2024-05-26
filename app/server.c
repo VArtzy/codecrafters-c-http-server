@@ -57,7 +57,6 @@ void http_handler(int conn) {
     } else if (strncmp(path, "/echo/", 6) == 0) {
         strtok(0, "\r\n\r\n");
         strtok(0, "\r\n\r\n");
-        strtok(0, "\r\n\r\n");
         char *contentEncoding = strtok(0, "\r\n");
         char *format;
         printf(contentEncoding);
