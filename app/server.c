@@ -54,10 +54,10 @@ int main() {
     read(conn, buff, sizeof(buff));
     strtok(buff, " ");
     char* path = strtok(0, " ");
-    printf(buff);
     if (strncmp(path, "/user-agent", 11) == 0) {
         printf(path);
     strtok(buff, " ");
+    printf(buff);
     } else if (strncmp(path, "/echo/", 6) == 0) {
         size_t contentLength = strlen(path) - 6;
         char *content = path + 6;
