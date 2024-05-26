@@ -61,6 +61,7 @@ void http_handler(int conn) {
         size_t contentLength = strlen(path) - 6;
         char *content = path + 6;
         char response[1024];
+        printf(contentEncoding);
         if (strcmp(contentEncoding, "Accept-Encoding: gzip") == 1) {
             sprintf(response, "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s", contentLength, content);
         } else {
