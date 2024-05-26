@@ -84,7 +84,7 @@ void http_handler(int conn) {
                 char compressed[1024];
                 int compressedLength = compressToGzip(content, strlen(content), compressed, 1024);
                 sprintf(response, "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n", compressedLength);
-                memcpy(response + strlen(response), compressed, compressed_len);
+                memcpy(response + strlen(response), compressed, compressedLength);
             } else {
                 sprintf(response, "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s", contentLength, content);
             }
