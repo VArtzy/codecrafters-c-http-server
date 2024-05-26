@@ -15,6 +15,17 @@ void http_handler(int conn) {
     read(conn, buff, sizeof(buff));
     strtok(buff, " ");
     char* path = strtok(0, " ");
+    if (strncmp(path, "/files", 6) == 0 && directory != NULL && strcmp(buff, "POST") == 0) {
+        strtok(0, "\r\n\r\n");
+        char *content = strtok(0, "\r\n\r\n");
+        char *filename = path + 7;
+        const char *filepath = strcat(directory, filename);
+        FILE *fptr = fopen(filepath, "w");
+        fprintf(fptr, content);
+        fclose(fptr);
+        char response[] = "HTTP/1.1 201 ACCEPTED\r\n\r\n";
+        send(conn, response, sizeof(response), 0);
+    }
     if (strncmp(path, "/files", 6) == 0 && directory != NULL) {
         char *file = strchr(path + 1, '/'); 
         if (file != NULL) {
@@ -23,6 +34,7 @@ void http_handler(int conn) {
             if (fd != NULL) {
                 char fbuff[2048];
                 int contentLength = fread(fbuff, 1, 2048, fd);       
+                fclose(fd);
                 const char *format = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: %zu\r\n\r\n%s";
                 char response[1024];
                 sprintf(response, format, contentLength, fbuff);
