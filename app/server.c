@@ -58,7 +58,10 @@ int main() {
         strtok(0, "\r\n");
         strtok(0, "\r\n");
         char* userAgent = strtok(0, "\r\n") + 12;
-        printf(userAgent);
+        const char *format = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
+        char response[1024];
+        sprintf(response, format, strlen(userAgent), userAgent);
+        send(conn, response, sizeof(response), 0);
     } else if (strncmp(path, "/echo/", 6) == 0) {
         size_t contentLength = strlen(path) - 6;
         char *content = path + 6;
