@@ -57,7 +57,7 @@ void http_handler(int conn) {
     } else if (strncmp(path, "/echo/", 6) == 0) {
         strtok(0, "\r\n\r\n");
         strtok(0, "\r\n\r\n");
-        bool contentEncodingExist = NULL != strtok(0, "\r\n");
+        int contentEncodingExist = NULL != strtok(0, "\r\n");
         char *contentEncoding;
         if (contentEncodingExist) contentEncoding = strtok(0, ""); 
         else contentEncoding = "no content encoding";
