@@ -72,8 +72,6 @@ void http_handler(int conn) {
         sprintf(response, format, contentLength, content);
         send(conn, response, sizeof(response), 0);
         }
-        sprintf(response, format, contentLength, content);
-        send(conn, response, sizeof(response), 0);
     } else if (strcmp(path, "/") == 0) {
         char response[] = "HTTP/1.1 200 OK\r\n\r\n";
         send(conn, response, sizeof(response), 0);
