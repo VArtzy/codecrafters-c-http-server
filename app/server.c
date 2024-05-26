@@ -58,11 +58,12 @@ void http_handler(int conn) {
         strtok(0, "\r\n\r\n");
         strtok(0, "\r\n\r\n");
         char *contentEncoding = strtok(0, "\r\n");
+        if (contentEncoding == NULL) contentEncoding == "thisisasd";
         size_t contentLength = strlen(path) - 6;
         char *content = path + 6;
         char response[1024];
         printf(contentEncoding);
-        if (strncmp(contentEncoding, "gzip", 15) == 0) {
+        if (strcmp(contentEncoding, "Accept-Encoding: gzip") == 0) {
             sprintf(response, "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s", contentLength, content);
         } else {
             sprintf(response, "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s", contentLength, content);
