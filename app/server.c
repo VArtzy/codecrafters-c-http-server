@@ -13,7 +13,21 @@ void http_handler(int conn) {
     read(conn, buff, sizeof(buff));
     strtok(buff, " ");
     char* path = strtok(0, " ");
-    if (strncmp(path, "/user-agent", 11) == 0) {
+    if (strncmp(path, "/files", 6) == 0 && directory != NULL) {
+        char *file = strchr(path + 1, '/'); 
+        if (file != NULL) {
+            const char *filepath = strcat(directory, file);
+            FILE *fd = fopen(filepath, "r");
+            if (fd != NULL) {
+                char fbuff[2048];
+                int contentLength = fread(fbuff, 1, 2048, fd);       
+                const char *format = "HTTP/1.1 200 OK\r\nContent-Type: application/octet-stream\r\nContent-Length: %zu\r\n\r\n%s";
+                char response[1024];
+                sprintf(response, format, contentLength, fbuff);
+                send(conn, response, sizeof(response), 0);
+            }
+        }
+    } else if (strncmp(path, "/user-agent", 11) == 0) {
         strtok(0, "\r\n");
         strtok(0, "\r\n");
         char* userAgent = strtok(0, "\r\n") + 12;
@@ -37,7 +51,11 @@ void http_handler(int conn) {
     }
 }
 
-int main() {
+int main(int argc, char **argv) {
+    char *directory = NULL;
+    if (argc >= 2 && strncmp(argv[1], "--directory", sizeof("--directory")) == 0) {
+        directory = argv[2];
+    }
 	// Disable output buffering
 	setbuf(stdout, NULL);
 
