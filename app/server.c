@@ -59,7 +59,7 @@ int main() {
         char *content = path + 6;
         const char *format = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
         char *response;
-        asprintf(response, format, contentLength, content);
+        asprintf(&response, format, contentLength, content);
         printf(response);
     } else if (strcmp(path, "/") == 0) {
         char response[] = "HTTP/1.1 200 OK\r\n\r\n";
