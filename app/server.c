@@ -54,7 +54,9 @@ int main() {
     read(conn, buff, sizeof(buff));
     strtok(buff, " ");
     char* path = strtok(0, " ");
-    if (strncmp(path, "/echo/", 6) == 0) {
+    if (strncmp(path, "/user-agent", 11) == 0) {
+        printf(path);
+    } else if (strncmp(path, "/echo/", 6) == 0) {
         size_t contentLength = strlen(path) - 6;
         char *content = path + 6;
         const char *format = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
