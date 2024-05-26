@@ -55,9 +55,14 @@ void http_handler(int conn) {
         sprintf(response, format, strlen(userAgent), userAgent);
         send(conn, response, sizeof(response), 0);
     } else if (strncmp(path, "/echo/", 6) == 0) {
+        char *contentEncoding = strtok(0, "\r\n\r\n");
+        char *format;
+        if (strcmp(contentEncoding, "Accept-Encoding: gzip") == 0) {   
+        format = "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
+        }
         size_t contentLength = strlen(path) - 6;
         char *content = path + 6;
-        const char *format = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
+        format = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
         char response[1024];
         sprintf(response, format, contentLength, content);
         send(conn, response, sizeof(response), 0);
