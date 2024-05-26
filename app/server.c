@@ -8,9 +8,7 @@
 #include <errno.h>
 #include <unistd.h>
 
-void http_handler(void *args) {
-    int conn = (int)args;
-
+void http_handler(int conn) {
     uint8_t buff[1024];
     read(conn, buff, sizeof(buff));
     strtok(buff, " ");
@@ -85,7 +83,7 @@ int main() {
         if (conn < 0) {
             break;
         }
-        pthread_create(&tid, NULL, http_handler, (void *)conn); 
+        pthread_create(&tid, NULL, http_handler, (int *)conn); 
         printf("Client connected\n");
     }
 
