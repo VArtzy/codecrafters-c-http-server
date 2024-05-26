@@ -64,7 +64,7 @@ void http_handler(int conn) {
         printf(contentEncoding);
         if (strcmp(contentEncoding, "Accept-Encoding: gzip") == 0) {
             sprintf(response, "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s", contentLength, content);
-        } else {
+        } else if (strcmp(contentEncoding, "Accept-Encoding: invalid-encoding") == 0) {
             sprintf(response, "HTTP/1.2 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s", contentLength, content);
         }
         send(conn, response, sizeof(response), 0);
