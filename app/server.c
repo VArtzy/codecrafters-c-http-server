@@ -11,7 +11,6 @@
 
 char *directory = NULL;
 
-
 int compressToGzip(const char *input, int inputSize, char *output, int outputSize) {
   z_stream zs = {0};
   zs.zalloc = Z_NULL;
