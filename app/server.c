@@ -54,8 +54,8 @@ int main() {
     read(conn, buff, sizeof(buff));
     strtok(buff, " ");
     char* path = strtok(0, " ");
-    printf(strtok(0, " "));
-    printf(strtok(0, " "));
+    printf(strtok(0, "\r\n"));
+    printf(strtok(0, "\r\n"));
     if (strncmp(path, "/user-agent", 11) == 0) {
     } else if (strncmp(path, "/echo/", 6) == 0) {
         size_t contentLength = strlen(path) - 6;
