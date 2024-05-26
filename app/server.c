@@ -52,13 +52,11 @@ int main() {
 
     uint8_t buff[1024];
     read(conn, buff, sizeof(buff));
-    char* pch = strtok(buff, "\r\n");
-    while (pch != NULL) {
-        printf("%s\n", pch);
-        pch = strtok(NULL, "\r\n"); 
-    }
-    char* path = "/user-agent"; 
+    strtok(buff, " ");
+    printf(buff);
+    char* path = strtok(0, " ");
     if (strncmp(path, "/user-agent", 11) == 0) {
+        printf(path);
     } else if (strncmp(path, "/echo/", 6) == 0) {
         size_t contentLength = strlen(path) - 6;
         char *content = path + 6;
