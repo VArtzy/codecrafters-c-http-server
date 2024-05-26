@@ -65,13 +65,12 @@ void http_handler(int conn) {
             printf("nfrfr");
             const char *format = "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
         sprintf(response, format, contentLength, content);
-        send(conn, response, sizeof(response), 0);
         } else {
             printf("Frfr");
         const char *format = "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s";
         sprintf(response, format, contentLength, content);
-        send(conn, response, sizeof(response), 0);
         }
+        send(conn, response, sizeof(response), 0);
     } else if (strcmp(path, "/") == 0) {
         char response[] = "HTTP/1.1 200 OK\r\n\r\n";
         send(conn, response, sizeof(response), 0);
