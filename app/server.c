@@ -17,6 +17,7 @@ void http_handler(int conn) {
     char* path = strtok(0, " ");
     if (strncmp(path, "/files", 6) == 0 && directory != NULL && strcmp(buff, "POST") == 0) {
         strtok(0, "\r\n\r\n");
+        strtok(0, "\r\n\r\n");
         char *content = strtok(0, "\r\n\r\n");
         char *filename = path + 7;
         const char *filepath = strcat(directory, filename);
