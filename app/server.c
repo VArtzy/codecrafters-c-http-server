@@ -59,7 +59,7 @@ void http_handler(int conn) {
         strtok(0, "\r\n\r\n");
         int contentEncodingExist = NULL != strtok(0, "\r\n");
         char *contentEncoding;
-        if (contentEncodingExist) contentEncoding = strtok(0); 
+        if (contentEncodingExist) contentEncoding = strtok(0, "\r\n"); 
         else contentEncoding = "no content encoding";
         size_t contentLength = strlen(path) - 6;
         char *content = path + 6;
