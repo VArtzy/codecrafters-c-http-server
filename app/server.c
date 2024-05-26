@@ -51,11 +51,12 @@ int main() {
 	printf("Client connected\n");
 
     uint8_t buff[1024];
-    printf(buff);
     read(conn, buff, sizeof(buff));
     strtok(buff, " ");
     char* path = strtok(0, " ");
     if (strncmp(path, "/user-agent", 11) == 0) {
+        printf(path);
+        printf(buff);
     } else if (strncmp(path, "/echo/", 6) == 0) {
         size_t contentLength = strlen(path) - 6;
         char *content = path + 6;
