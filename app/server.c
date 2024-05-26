@@ -57,7 +57,10 @@ void http_handler(int conn) {
     } else if (strncmp(path, "/echo/", 6) == 0) {
         strtok(0, "\r\n\r\n");
         strtok(0, "\r\n\r\n");
-        char *contentEncoding = NULL != strtok(0, "\r\n");
+        bool contentEncodingExist = NULL != strtok(0, "\r\n");
+        char *contentEncoding;
+        if (contentEncodingExist) contentEncoding = strtok(0, ""); 
+        else contentEncoding = "no content encoding";
         size_t contentLength = strlen(path) - 6;
         char *content = path + 6;
         char response[1024];
