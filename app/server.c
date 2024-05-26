@@ -8,6 +8,8 @@
 #include <errno.h>
 #include <unistd.h>
 
+char *directory = NULL;
+
 void http_handler(int conn) {
     uint8_t buff[1024];
     read(conn, buff, sizeof(buff));
@@ -52,7 +54,6 @@ void http_handler(int conn) {
 }
 
 int main(int argc, char **argv) {
-    char *directory = NULL;
     if (argc >= 2 && strncmp(argv[1], "--directory", sizeof("--directory")) == 0) {
         directory = argv[2];
     }
