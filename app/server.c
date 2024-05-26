@@ -27,6 +27,9 @@ void http_handler(int conn) {
                 char response[1024];
                 sprintf(response, format, contentLength, fbuff);
                 send(conn, response, sizeof(response), 0);
+            } else {
+                char response[] = "HTTP/1.1 404 Not Found\r\n\r\n";
+                send(conn, response, sizeof(response), 0);
             }
         }
     } else if (strncmp(path, "/user-agent", 11) == 0) {
