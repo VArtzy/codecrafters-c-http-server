@@ -57,6 +57,7 @@ int main() {
         printf("%s\n", pch);
         pch = strtok(NULL, "\r\n"); 
     }
+    char* path = "/user-agent"; 
     if (strncmp(path, "/user-agent", 11) == 0) {
     } else if (strncmp(path, "/echo/", 6) == 0) {
         size_t contentLength = strlen(path) - 6;
