@@ -57,15 +57,12 @@ void http_handler(int conn) {
     } else if (strncmp(path, "/echo/", 6) == 0) {
         strtok(0, "\r\n\r\n");
         strtok(0, "\r\n\r\n");
-        int contentEncodingExist = NULL != strtok(0, "\r\n");
-        char *contentEncoding;
-        if (contentEncodingExist) contentEncoding = strtok(0, "\r\n"); 
-        else contentEncoding = "no content encoding";
+        int contentEncoding = NULL != strtok(0, "\r\n");
         size_t contentLength = strlen(path) - 6;
         char *content = path + 6;
         char response[1024];
         printf(contentEncoding);
-        if (strcmp(contentEncoding, "Accept-Encoding: gzip") == 0) {
+        if (contentEncoding == 0) {
             sprintf(response, "HTTP/1.1 200 OK\r\nContent-Encoding: gzip\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s", contentLength, content);
         } else {
             sprintf(response, "HTTP/1.1 200 OK\r\nContent-Type: text/plain\r\nContent-Length: %zu\r\n\r\n%s", contentLength, content);
